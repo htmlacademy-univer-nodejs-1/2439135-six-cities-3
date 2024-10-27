@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { OfferGenerator } from './offer-generator.interface.js';
-import { MockServerData } from '../../types/index.js';
+import { MockServerData, Author } from '../../types/index.js';
 import { generateRandomValue, getRandomItem, getRandomItems } from '../../helpers/index.js';
 import { facilitiesEnum, housingTypes, citys, } from '../../types/offer.js';
 import { citysCoordinates } from '../../../const.js';
@@ -13,7 +13,7 @@ export class TSVOfferGenerator implements OfferGenerator {
     const description = getRandomItem<string>(this.mockData.description);
     const city = getRandomItem([citys.Amsterdam, citys.Brussels, citys.Cologne, citys.Dusseldorf, citys.Hamburg, citys.Paris]);
     const preview = getRandomItem<string>(this.mockData.preview);
-    const photos = getRandomItems(this.mockData.photos).join(';');
+    const photos = getRandomItems(this.mockData.photos);//.join(';');
     const isPremium = getRandomItem([true, false]);
     const isFavorite = getRandomItem([true, false]);
     const rating = generateRandomValue(1, 5).toString();
@@ -23,12 +23,8 @@ export class TSVOfferGenerator implements OfferGenerator {
     const price = generateRandomValue(500, 15000).toString();
     const allFacilities = [facilitiesEnum.AirConditioning, facilitiesEnum.BabySeat,facilitiesEnum.Breakfast, facilitiesEnum.Fridge, facilitiesEnum.LaptopFriendlyWorkspace, facilitiesEnum.Towels, facilitiesEnum.Washer];
     const facilities = getRandomItems(allFacilities).join(', ');
-    const authorName = getRandomItem<string>(this.mockData.authorName);
-    const authorEmail = getRandomItem<string>(this.mockData.authorEmail);
-    const authorPassword = getRandomItem<string>(this.mockData.authorPassword);
-    const authorType = getRandomItem(['обычный', 'pro']);
-    const authorAvatar = getRandomItem<string>(this.mockData.authorAvatar);
-    const author = [authorName, authorEmail, authorPassword, authorType, authorAvatar].join(', ');
+    const author = getRandomItem<Author>(this.mockData.author);
+   // const author = [authorName, authorEmail, authorPassword, authorType, authorAvatar].join(', ');
     const commentsCount = generateRandomValue(1, 12).toString();
     const coordinatesObj = citysCoordinates.get(city as citys);
 

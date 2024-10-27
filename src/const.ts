@@ -1,4 +1,5 @@
 import {citys} from './shared/types/offer.js';
+import chalk from 'chalk';
 
 export const citysCoordinates: Map<string, { latitude: number; longitude: number }> =
   new Map(
@@ -11,3 +12,6 @@ export const citysCoordinates: Map<string, { latitude: number; longitude: number
       [citys.Dusseldorf]: { latitude: 51.225402, longitude: 6.776314 },
     })
   );
+
+export const errorStyle = chalk.red;
+export const pinkStyle = chalk.hex('#CA09A9');

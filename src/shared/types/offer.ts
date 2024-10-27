@@ -43,23 +43,20 @@ export type Author = {
   email: string;
 
   /**
-   * Пароль
-   * Обязательное. Мин. длина 6 символов, макс. длина 12 символов;
-   */
-  password: string;
-
-  /**
    * Тип пользователя
    * Возможные варианты: обычный, pro.
    */
-  authorType: 'обычный' | 'pro';
+  authorType: authorTypeEnum.Default | authorTypeEnum.Pro;
   /**
    *   Аватар пользователя
    *  Изображение пользователя в формате .jpg или .png;
    */
   avatar?: string;
 };
-
+export enum authorTypeEnum{
+  Default='обычный',
+  Pro='pro'
+}
 export type Comment = {
   /**
    * Текст комментария
@@ -86,7 +83,7 @@ export type Comment = {
   author: Author;
 }
 
-export type Coordinates = { latitude: number; longitude: number };
+//export type Coordinates = { latitude: number; longitude: number };
 
 export type Offer = {
   /**
@@ -188,5 +185,5 @@ export type Offer = {
    * Координаты предложения для аренды
    * Координаты представлены широтой и долготой
    */
-  coordinates: Coordinates;
+  coordinates: string;
 };

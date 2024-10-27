@@ -16,10 +16,8 @@ _`.editorconfig`, `.gitattributes`, `.gitignore`._
 
 npm run mock:server
 
-### 2. Генерация новых данных
+### 2. Импорт данных
 
-npm run ts ./src/main.cli.ts -- --generate 100 ./mocks/test-data.tsv http://localhost:3123/api
-
-
+node ./dist/main.cli.js -- --import ./mocks/test-data.tsv
 
 Репозиторий создан для обучения на профессиональном онлайн‑курсе «[Node.js. Профессиональная разработка REST API](https://htmlacademy.ru/profession/fullstack)» от [HTML Academy](https://htmlacademy.ru).
