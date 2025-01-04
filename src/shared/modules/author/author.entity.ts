@@ -2,7 +2,7 @@ import { defaultClasses, getModelForClass, prop, modelOptions } from '@typegoose
 import {Author, authorTypeEnum} from '../../types/index.js';
 import { createSHA256 } from '../../helpers/index.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+
 export interface AuthorEntity extends defaultClasses.Base {}
 
 @modelOptions({
@@ -10,7 +10,7 @@ export interface AuthorEntity extends defaultClasses.Base {}
     collection: 'users'
   }
 })
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+
 export class AuthorEntity extends defaultClasses.TimeStamps implements Author {
   @prop({ unique: true, required: true })
   public email: string;
@@ -18,7 +18,7 @@ export class AuthorEntity extends defaultClasses.TimeStamps implements Author {
   @prop({ required: false, default: '' })
   public name: string;
 
-  @prop({ required: true, default: '' })
+  @prop({ required: false, default: '' })
   public avatar?: string;
 
   @prop({ required: true, enum: authorTypeEnum })
@@ -42,6 +42,11 @@ export class AuthorEntity extends defaultClasses.TimeStamps implements Author {
 
   public getPassword() {
     return this.password;
+  }
+
+  public verifyPassword(password: string, salt: string) {
+    const hashPassword = createSHA256(password, salt);
+    return hashPassword === this.password;
   }
 }
 

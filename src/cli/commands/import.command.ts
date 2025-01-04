@@ -10,6 +10,7 @@ import { DefaultAuthorService, AuthorModel } from '../../shared/modules/author/i
 import { DEFAULT_DB_PORT, DEFAULT_AUTHOR_PASSWORD } from './command.constant.js';
 import { Offer } from '../../shared/types/index.js';
 import TsvFileReader from '../../shared/libs/file-reader/tsv-file-reader.js';
+import chalk from 'chalk';
 
 
 export class ImportCommand implements Command {
@@ -58,20 +59,19 @@ export class ImportCommand implements Command {
     return '--import';
   }
 
-  public async execute(filename: string, login: string, password: string, host: string, dbname: string, salt: string): Promise<void> {
+  public async execute(filename: string, login: string = 'admin', password: string = 'test', host: string = '127.0.0.1', dbname: string = 'six-cities_mongodb', salt: string = 'secret'): Promise<void> {
     const uri = getMongoURI(login, password, host, DEFAULT_DB_PORT, dbname);
     this.salt = salt;
-
     await this.databaseClient.connect(uri);
     const fileReader = new TsvFileReader(filename.trim());
     fileReader.on('line', this.onImportedLine);
     fileReader.on('end', this.onCompleteImport);
     try {
       await fileReader.read();
-      console.error('успешно');
     } catch (error) {
       console.error(errorStyle(`Can't import data from file: ${filename}`));
       console.error(errorStyle(getErrorMessage(error)));
     }
+    console.info(chalk.green('file read done'));
   }
 }

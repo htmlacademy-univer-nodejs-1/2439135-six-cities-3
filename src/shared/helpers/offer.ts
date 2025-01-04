@@ -1,4 +1,4 @@
-import { Author, citys, Facilities, HousingType, Offer, Coordinates } from '../types/index.js';
+import { Author, citys, Facilities, HousingType, Offer } from '../types/index.js';
 
 export function createOffer(offerData: string): Offer {
   const [
@@ -19,9 +19,6 @@ export function createOffer(offerData: string): Offer {
     authorType: authorType,
     avatar: authorAvatar
   } as Author;
-  const [latitude, longitude] = coordinates.split(', ');
-
-  const coordinatesObj = {latitude: +latitude, longitude: +longitude} as Coordinates;
 
   return {
     name,
@@ -40,6 +37,6 @@ export function createOffer(offerData: string): Offer {
     facilities: facilities.split(', ').map((item) => item as Facilities),
     author: authorObj,
     commentsCount: Number.parseInt(commentsCount, 10),
-    coordinates: coordinatesObj
+    coordinates: coordinates
   };
 }

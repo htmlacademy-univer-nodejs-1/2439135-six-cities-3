@@ -29,13 +29,12 @@ export class MongoDatabaseClient implements DatabaseClient {
     }
 
     this.logger.info('Trying to connect to MongoDB…');
-
     let attempt = 0;
     while (attempt < RETRY_COUNT) {
       try {
         this.mongoose = await Mongoose.connect(uri);
         this.isConnected = true;
-        this.logger.info('Database connection established.');
+        this.logger.info('Database connection detected');
         return;
       } catch (error) {
         attempt++;
@@ -44,7 +43,8 @@ export class MongoDatabaseClient implements DatabaseClient {
       }
     }
 
-    throw new Error(`Unable to establish database connection after ${RETRY_COUNT}`);
+    const errorMessage = `Unable to establish database connection after ${RETRY_COUNT}`;
+    throw new Error(errorMessage);
   }
 
   public async disconnect(): Promise<void> {

@@ -1,0 +1,113 @@
+# Предложения
+
+## Получить список предложений
+
+GET http://localhost:4000/offers HTTP/1.1
+
+###
+
+## Получить предложение
+
+GET http://localhost:4000/offers/6775c919c97b242a5201cee4 HTTP/1.1
+
+###
+
+## Получить премиум предложения по городу
+
+GET http://localhost:4000/offers/premium/Dusseldorf HTTP/1.1
+
+###
+
+## Создать новоe предложение
+
+POST http://localhost:4000/offers HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBvbGlua2FtYWxpbmthQGdtYWlsLmNvbSIsIm5hbWUiOiIiLCJhdXRob3JUeXBlIjoicHJvIiwiaWQiOiI2Nzc4ODBhYWJmODJlMTIwMWU3MThjYzUiLCJpYXQiOjE3MzYwMTgxMTgsImV4cCI6MTczNjE5MDkxOH0.uV1GdFzMmudZVLINHohhtXuLjhuGQv3Sd9CjADrLiF0
+
+{
+  "name": "лучший отель",
+  "description": "самый самый лучший отель",
+  "date": "2024-10-26T11:39:50.417Z",
+  "city": "Dusseldorf",
+  "preview": "childrenHouse.png",
+  "photos": [
+    "gym.png",
+    "room.png",
+    "kitchen.png"
+  ],
+  "isPremium": true,
+  "isFavorite": true,
+  "rating": 5,
+  "housingType": "room",
+  "roomsCount": 11,
+  "guestsCount": 2,
+  "price": 12278,
+  "coordinates": "51.225402, 6.776314",
+  "facilities": [
+    "Washer"
+  ],
+  "commentsCount": 6
+}
+
+###
+
+## Удалить предложение
+
+DELETE http://localhost:4000/offers/6775c919c97b242a5201cee4 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBvbGlua2FtYWxpbmthQGdtYWlsLmNvbSIsIm5hbWUiOiIiLCJhdXRob3JUeXBlIjoicHJvIiwiaWQiOiI2Nzc4ODBhYWJmODJlMTIwMWU3MThjYzUiLCJpYXQiOjE3MzYwMTgxMTgsImV4cCI6MTczNjE5MDkxOH0.uV1GdFzMmudZVLINHohhtXuLjhuGQv3Sd9CjADrLiF0
+
+###
+
+## Изменять предложение
+
+PATCH http://localhost:4000/offers/6775c919c97b242a5201cee4 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBvbGlua2FtYWxpbmthQGdtYWlsLmNvbSIsIm5hbWUiOiIiLCJhdXRob3JUeXBlIjoicHJvIiwiaWQiOiI2Nzc4ODBhYWJmODJlMTIwMWU3MThjYzUiLCJpYXQiOjE3MzYwMTgxMTgsImV4cCI6MTczNjE5MDkxOH0.uV1GdFzMmudZVLINHohhtXuLjhuGQv3Sd9CjADrLiF0
+
+{
+  "name": "лучший отель",
+  "description": "самый самый лучший отель",
+  "date": "2024-10-26T11:39:50.417Z",
+  "city": "Dusseldorf",
+  "preview": "childrenHouse.png",
+  "photos": [
+    "gym.png",
+    "room.png",
+    "kitchen.png"
+  ],
+  "isPremium": true,
+  "isFavorite": true,
+  "rating": 5,
+  "housingType": "room",
+  "roomsCount": 11,
+  "guestsCount": 2,
+  "price": 12278,
+  "coordinates": "51.225402, 6.776314",
+  "facilities": [
+    "Washer"
+  ],
+  "commentsCount": 6
+}
+
+###
+
+## Получить избранные предложения
+
+GET http://localhost:4000/offers/favorite HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBvbGlua2FtYWxpbmthQGdtYWlsLmNvbSIsIm5hbWUiOiIiLCJhdXRob3JUeXBlIjoicHJvIiwiaWQiOiI2Nzc4ODBhYWJmODJlMTIwMWU3MThjYzUiLCJpYXQiOjE3MzYwMTgxMTgsImV4cCI6MTczNjE5MDkxOH0.uV1GdFzMmudZVLINHohhtXuLjhuGQv3Sd9CjADrLiF0
+
+###
+
+## добавить в избранное
+
+POST http://localhost:4000/offers/favorite/6775c919c97b242a5201cee4 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBvbGlua2FtYWxpbmthQGdtYWlsLmNvbSIsIm5hbWUiOiIiLCJhdXRob3JUeXBlIjoicHJvIiwiaWQiOiI2Nzc4ODBhYWJmODJlMTIwMWU3MThjYzUiLCJpYXQiOjE3MzYwMTgxMTgsImV4cCI6MTczNjE5MDkxOH0.uV1GdFzMmudZVLINHohhtXuLjhuGQv3Sd9CjADrLiF0
+
+###
+
+## удалить из избранного
+
+DELETE http://localhost:4000/offers/favorite/6775c919c97b242a5201cee4 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBvbGlua2FtYWxpbmthQGdtYWlsLmNvbSIsIm5hbWUiOiIiLCJhdXRob3JUeXBlIjoicHJvIiwiaWQiOiI2Nzc4ODBhYWJmODJlMTIwMWU3MThjYzUiLCJpYXQiOjE3MzYwMTgxMTgsImV4cCI6MTczNjE5MDkxOH0.uV1GdFzMmudZVLINHohhtXuLjhuGQv3Sd9CjADrLiF0
+
+###

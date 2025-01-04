@@ -1,0 +1,374 @@
+openapi: '3.0.3'
+info:
+  title: API сервер для демо-проекта «6 городов».
+  description: Список ресурсов сервера «6 городов».
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: '1.0'
+tags:
+  - name: offers
+    description: Действия с объявлениями.
+  - name: comments
+    description: Действия с комментариями.
+  - name: users
+    description: Действия с пользователем.
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /offers:
+    post:
+      tags:
+        - offers
+      summary: Создание нового предложения
+      description: Создавать предложения могут только авторизованные клиенты.
+      requestBody:
+        description: Информация для создания нового предложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+      responses:
+        "201":
+          description: Предложение создано.
+        "401":
+          description: Создавать предложения по аренде могут только авторизованные клиенты.
+        "400":
+          description: Поля заполнены неверно
+    get:
+      tags:
+        - offers
+      summary: Получить список предложений
+      description: Сервис всегда возвращает отсортированный список предложений по дате публикации (по убыванию). Предложение не содержит список комментариев. Только информацию об их количестве. Для запроса комментариев к определённому предложению сервис предоставляет отдельный ресурс. Список предложений по аренде могут запрашивать анонимные и авторизованные клиенты. 
+      parameters:
+        - name: countOffers
+          description: По умолчанию сервис возвращает не больше 60 предложений по аренде, клиент может указать нужное количество в запросе.
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Список успешно получен.
+        "400":
+          description: Ошибка в указании параметра.
+        "401":
+          description: Получить предложения по аренде могут только авторизованные клиенты.
+
+  /offers/{offerId}:
+    get:
+      tags:
+        - offers
+      summary: Получить информацию по предложению
+      description: Детальная информация по предложению включает сведения о количестве комментариев. Сами комментарии не включены. Детальную информацию по предложению могут запрашивать авторизованные и анонимные клиенты.
+      responses:
+        "200":
+          description: Информация успешно получена.
+        "400":
+          description: Ошибка в указании параметра.
+        "401":
+          description: Получить предложения по аренде могут только авторизованные клиенты.
+    delete:
+      tags:
+        - offers
+      summary: Удаление предложения
+      description: Клиент должен быть авторизован и может удалять только свои предложения.
+      responses:
+        "200":
+          description: Предложение успешно удалено.
+        "401":
+          description: Удалять предложения по аренде могут только авторизованные клиенты.
+        "403":
+          description: Удалять можно только свои предложения.
+    put:
+      tags:
+        - offers
+      summary: Редактирование предложения
+      description: Клиент должен быть авторизован и может редактировать предложения по аренде, созданные им.
+      responses:
+        "200":
+          description: Предложение успешно отредактировано.
+        "400":
+          description: Валидация не пройдена.
+        "403":
+          description: Нельзя редактировать чужое предложение.
+        "401":
+          description: Редактировать предложения по аренде могут только авторизованные клиенты.
+
+  /offers/{offerId}/comments?count=50:
+    get:
+      tags:
+        - comments
+      summary: Список комментариев для предложения
+      description: Сервис всегда возвращает список из 50 (или меньше) последних комментариев. Комментарии отсортированы по дате публикации (по убыванию). Сначала новые, потом старые. Комментарии могут запрашивать авторизованные и анонимные клиенты. 
+      responses:
+        "200":
+          description: Список комментариев успешно получен.
+        "400":
+          description: Ошибка в указании параметра предложения.
+        "401":
+          description: Получить комментарии могут только авторизованные клиенты.
+    post:
+      tags:
+        - comments
+      summary: Добавление комментария
+      description: Сервис предоставляет ресурс для добавления комментариев к определённому предложению по аренде.Добавлять комментарии могут только авторизованные клиенты.
+      requestBody:
+        description: Информация для создания нового комментария.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createComment'
+        required: true
+      responses:
+        "201":
+          description: Комментарий добавлен.
+        "400":
+          description: Ошибка валидации комментария.
+        "401":
+          description: Создавать предложения по аренде могут только авторизованные клиенты.
+
+
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Регистрация пользователя
+      description: Регистрирует нового пользователя. Создавать новых пользователей могут только анонимные клиенты.
+      requestBody:
+        description: Информация для создания нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createUser'
+        required: true
+      responses:
+        "201":
+          description: Пользователь зарегистрирован.
+        "409":
+          description: Пользователь с таким email уже существует.
+        "400":
+          description: Ошибка валидации.
+
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Авторизация пользователя
+      description: Авторизует пользователя на основе логина и пароля
+      responses:
+        "200":
+          description: Пользователь авторизован.
+        "400":
+          description: Ошибка валидации.
+
+    get:
+      tags:
+        - users
+      summary: Проверка состояния пользователя
+      description: Возвращает токен
+      responses:
+        "200":
+          description: Токен получен.
+        "400":
+          description: Ошибка валидации.
+    
+  /users/logout:
+    get:
+      tags:
+        - users
+      summary: Завершение сеанса
+      description: Сервис предоставляет ресурс для завершения пользовательского сеанса
+      responses:
+        "200":
+          description: Завершение сеанса выполнено.
+        "401":
+          description: Выйти можно только после авторизации.
+
+  /offers/premium/{city}:
+      get:
+        tags:
+          - offers
+        summary: Получить список premium предложений
+        description: Список возвращаемых предложений отсортирован по дате публикации (по убыванию). Ресурс доступен авторизованным и анонимным клиентам.
+        responses:
+          "200":
+            description: Список премиальных предложений.
+          "400":
+            description: Неверно указан город.
+
+  /offers/favorite:
+      get:
+        tags:
+          - offers
+        summary: Получить список favorite предложений
+        description: Сервис предоставляет ресурс для получения предложений, добавленных в избранное.
+        responses:
+          "200":
+            description: Список избранных предложений.
+          "400":
+            description: Доступно только авторизованным пользователям.
+
+  /offers/favorite/{offerId}:
+      post:
+        tags:
+          - offers
+        summary: Добавить в избранное
+        description: Сервис предоставляет ресурс для добавления и удаления любого предложения в/из списка избранных предложений.
+        responses:
+          "200":
+            description: Успешно добавлено.
+          "400":
+            description: Доступно только авторизованным пользователям.
+
+      delete:
+        tags:
+          - offers
+        summary: Удалить из избранного
+        description: Сервис предоставляет ресурс для добавления и удаления любого предложения в/из списка избранных предложений.
+        responses:
+          "200":
+            description: Успешно удалено.
+          "400":
+            description: Доступно только авторизованным пользователям.
+          "401":
+            description: Неверный параметр предложения.
+          
+components:
+  schemas:
+    createUser:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        name:
+          type: string
+          example: Keks
+
+        avatar:
+          type: string
+          example: Cat.png
+
+        password:
+          type: string
+          example: 123456
+
+        authorType:
+          type: string
+          example: обычный
+
+    user:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+      
+    createOffer:
+      type: object
+
+      properties:
+        name:
+          type: string
+          example: Keks hotel
+
+        description:
+          type: string
+          example: Очень выгодное предложение
+        
+        date:
+          type: string
+          example: '2024-12-28T14:09:21.261Z'
+
+        city:
+          type: string
+          example: Amsterdam
+
+        preview:
+          type: string
+          example: Лучший отель от Кекса в Амстердаме который можно найти.
+
+        photos:
+          type: array
+          items:
+            type: string
+          example: [photo1.png, photo2.png, photo3.png]
+
+        isPremium:
+          type: boolean
+          example: false
+
+        isFavorite:
+          type: boolean
+          example: true
+
+        rating:
+          type: number
+          example: 5
+        
+        housingType:
+          type: string
+          example: hotel
+
+        roomsCount:
+          type: number
+          example: 6
+
+        guestsCount:
+          type: number
+          example: 7
+
+        price:
+          type: number
+          example: 100654
+
+        facilities:
+          type: array
+          items:
+            type: string
+          example: [Washer, Fridge, Breakfast]
+        
+        author:
+          type: string
+          example: yourAuthorId
+        
+        commentsCount:
+          type: number
+          example: 3
+
+        coordinates:
+          type: array
+          items:
+              type: number
+          example: [52.370216, 4.895168]
+    createComment:
+      type: object
+
+      properties:
+        text:
+          type: string
+          example: Очень хороший отель
+
+        date:
+          type: string
+          example: 2024-12-28T14:09:21.261Z'
+
+        rating:
+          type: number
+          example: 5
+
+        author:
+          type: string
+          example: yourAuthorId
+
+      

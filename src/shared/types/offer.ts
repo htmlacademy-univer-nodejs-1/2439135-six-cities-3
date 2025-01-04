@@ -8,7 +8,8 @@ export enum facilitiesEnum {
   Towels ='Towels',
   Fridge = 'Fridge',
 }
-export type Facilities = keyof facilitiesEnum;
+export type Facilities = 'Breakfast' | 'Air conditioning'
+ | 'Laptop friendly workspace' | 'Baby seat' | 'Washer' | 'Towels' | 'Fridge';
 
 export enum housingTypes {
   Apartment = 'apartment',

@@ -62,7 +62,6 @@ export class OfferEntity extends defaultClasses.TimeStamps {
 
   @prop({
     type: () => String
-    //type: mongoose.Schema.Types.Mixed
   })
   public coordinates!: string;
 

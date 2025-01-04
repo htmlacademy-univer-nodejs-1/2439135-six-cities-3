@@ -1,0 +1,52 @@
+# Пользователи
+## Создать нового пользователя
+
+POST http://localhost:4000/users/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "polinka",
+  "email": "polinkamalinka@gmail.com",
+  "avatar": "polina.png",
+  "password": "123456",
+  "authorType": "pro"
+}
+
+###
+
+## Авторизовать пользователя
+
+POST http://localhost:4000/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "polinkamalinka@gmail.com",
+  "password": "123456"
+}
+
+###
+
+## Отправить изображение
+
+POST http://localhost:4000/users/67756b9a50df43b589bc2068/avatar HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="wolf.png"
+Content-Type: image/png
+
+< /Users/bubb/2439135-six-cities-3-bubb/upload/wolf2.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+## Пример с картинкой
+GET http://localhost:4000/upload/wolf2.jpg  HTTP/1.1
+
+###
+
+## Проверить токен пользователя
+GET http://localhost:4000/users/login HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBvbGlua2FtYWxpbmthQGdtYWlsLmNvbSIsImlkIjoiNjc3ODgwYWFiZjgyZTEyMDFlNzE4Y2M1IiwiaWF0IjoxNzM2MDIwODY2LCJleHAiOjE3MzYxOTM2NjZ9.G_9MM6Wu7B1OTwTuA0GSsV9FPW8S7qL1uFWRoeulRMc
+
+###

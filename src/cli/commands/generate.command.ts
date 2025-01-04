@@ -23,7 +23,8 @@ export class GenerateCommand implements Command {
       const tsvOfferGenerator = new TSVOfferGenerator(this.initialData);
       const tsvFileWriter = new TSVFileWriter(filepath);
       for (let i = 0; i < offerCount; i++) {
-        await tsvFileWriter.write(tsvOfferGenerator.generate());
+        const offer = tsvOfferGenerator.generate();
+        await tsvFileWriter.write(offer);
       }
     }
   }
@@ -35,6 +36,7 @@ export class GenerateCommand implements Command {
   public async execute(...parameters: string[]): Promise<void> {
     const [count, filepath, url] = parameters;
     const offerCount = Number.parseInt(count, 10);
+    console.info(pinkStyle(`Starting generate`));
     try {
       await this.load(url);
       await this.write(filepath, offerCount);

@@ -5,6 +5,7 @@ import { CreateAuthorDto } from './dto/create-author.dto.js';
 import { inject, injectable } from 'inversify';
 import { Component } from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
+import { UpdateAuthorDto } from './dto/update-author.dto.js';
 
 @injectable()
 export class DefaultAuthorService implements AuthorService {
@@ -35,5 +36,11 @@ export class DefaultAuthorService implements AuthorService {
     }
 
     return this.create(dto, salt);
+  }
+
+  public async updateById(authorId: string, dto: UpdateAuthorDto): Promise<DocumentType<AuthorEntity> | null> {
+    return this.authorModel
+      .findByIdAndUpdate(authorId, dto, { new: true })
+      .exec();
   }
 }
